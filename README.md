@@ -3,7 +3,8 @@
 This is a simple Ruby wrapper to [Leadsquared](http://apidocs.leadsquared.com/) API
 
 [![Build Status](https://secure.travis-ci.org/dpaluy/leadsquared.png)](http://travis-ci.org/dpaluy/leadsquared)
-[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/dpaluy/leadsquared)
+[![Code Climate](https://codeclimate.com/github/dpaluy/leadsquared/badges/gpa.svg)](https://codeclimate.com/github/dpaluy/leadsquared)
+[![Test Coverage](https://codeclimate.com/github/dpaluy/leadsquared/badges/coverage.svg)](https://codeclimate.com/github/dpaluy/leadsquared/coverage)
 
 ## Usage
 
