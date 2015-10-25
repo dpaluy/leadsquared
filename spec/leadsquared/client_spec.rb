@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Leadsquared do
+describe Leadsquared::Client do
   let(:client) { Leadsquared::Client.new('token', 'pass', 'http://localhost:8088/mock') }
 
   describe "Valid Request" do
