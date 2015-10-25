@@ -18,6 +18,29 @@ describe Leadsquared::LeadManagement do
     expect( Leadsquared::Client).to receive(:new).and_return mock_connection
   end
 
+  describe "#get_lead_by_id" do
+    let(:url) { "#{service}Leads.GetById" }
+    let(:lead_id) { "3131ea6a-bb20-4457-b183-ddf6d8716dfe" }
+    let(:valid_response) { double("response", status: 200, body: success_response.to_json) }
+    let(:success_response) do
+      [
+        {
+          "ProspectID" => " Lead Id ",
+          "FirstName" => "Syed",
+          "LastName" => "Rizwan Ali",
+          "EmailAddress" => "rizwan@yopmail.com",
+          "Company" => "Roga",
+          "SourceReferrer" => ""
+        }
+      ]
+    end
+
+    it "valid request with existing id" do
+      expect(mock_connection).to receive(:get).with(url, {id: lead_id}).and_return valid_response
+      response = subject.get_lead_by_id(lead_id)
+    end
+  end
+
   describe "#create_lead" do
     let(:url) { "#{service}Lead.Create" }
     let(:email) { "test@example.com" }

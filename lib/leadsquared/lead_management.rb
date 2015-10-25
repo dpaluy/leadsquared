@@ -11,7 +11,11 @@ module Leadsquared
       handle_response response
     end
 
-    def get_lead_by_id
+    def get_lead_by_id(lead_id)
+      url = url_with_service("Leads.GetById")
+      response = connection.get(url, {id: lead_id})
+      parsed_response = handle_response response
+      parsed_response.first
     end
 
     def get_lead_by_email
