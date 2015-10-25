@@ -12,13 +12,6 @@ SimpleCov.configure do
   load_adapter 'test_frameworks'
 end
 
-if ENV["COVERAGE"]
-  SimpleCov.start do
-    add_filter "/.rvm/"
-  end
-  CodeClimate::TestReporter.start
-end
-
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
@@ -26,6 +19,14 @@ require 'rspec'
 require 'leadsquared'
 require 'byebug'
 require 'webmock/rspec'
+
+if ENV["COVERAGE"]
+  SimpleCov.start do
+    add_filter "/.rvm/"
+  end
+  CodeClimate::TestReporter.start
+  WebMock.disable_net_connect!(:allow => "codeclimate.com")
+end
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
