@@ -1,6 +1,24 @@
 # leadsquared gem
 
-Description goes here.
+This is a simple Ruby wrapper to [Leadsquared](http://apidocs.leadsquared.com/) API
+
+## Usage
+
+`gem 'leadsquared'`
+
+You just need to provide the authentication details in you configuration, and you're set. For example, in Rails that would go into config/initializers/leadsquared.rb:
+
+```
+Leadsquared.configure do |config|
+  config.key    = 'mylogin'
+  config.secret = 'secret'
+  config.logger = Rails.logger
+end
+```
+
+### NOTE
+
+This version implements only LeadManagement as described [here](http://apidocs.leadsquared.com/meta-data/)
 
 ## Contributing to leadsquared
 
@@ -14,5 +32,4 @@ Description goes here.
 
 ## Copyright
 
-Copyright (c) 2015 David Paluy. See LICENSE.txt for
-further details.
+Copyright (c) 2015 David Paluy. See LICENSE.txt for further details.

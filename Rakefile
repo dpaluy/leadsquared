@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "leadsquared"
   gem.homepage = "http://github.com/dpaluy/leadsquared"
   gem.license = "MIT"
-  gem.summary = %Q{Ruby framework for integration with Leadsquared }
-  gem.description = %Q{Ruby framework for integration with Leadsquared. Leadsquared API: http://apidocs.leadsquared.com/create-a-lead/}
+  gem.summary = %Q{Ruby framework for integration with Leadsquared API}
+  gem.description = %Q{Ruby framework for integration with Leadsquared. Leadsquared API: http://apidocs.leadsquared.com/}
   gem.email = "dpaluy@gmail.com"
   gem.authors = ["David Paluy"]
   # dependencies defined in Gemfile
