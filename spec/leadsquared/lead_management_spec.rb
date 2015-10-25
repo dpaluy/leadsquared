@@ -115,6 +115,56 @@ describe Leadsquared::LeadManagement do
 
   end
 
+  describe "#update" do
+    let(:url) { "#{service}Lead.Update" }
+    let(:new_values) do
+      {phone: "1234567", city: "NY"}
+    end
+    let(:lead_id) { "3131ea6a-bb20-4457-b183-ddf6d8716dfe" }
+    let(:success_response) do
+      {
+        "Status" => "Success",
+        "Message" => {
+          "AffectedRows" => 1
+        }
+      }
+    end
+    let(:failed_response) do
+      {
+        "Status" => "Error",
+        "ExceptionType" => "MXInvalidEntityException",
+        "ExceptionMessage" => "Lead does not exist in the system"
+      }
+    end
+    let(:body) do
+       [
+        {
+          "Attribute": "phone",
+          "Value": "1234567"
+        },
+        {
+          "Attribute": "city",
+          "Value": "NY"
+        }
+      ]
+    end
+    let(:valid_response) { double("response", status: 200, body: success_response.to_json) }
+    let(:invalid_response) { double("response", status: 500, body: failed_response.to_json) }
+
+    it "existing lead" do
+      expect(mock_connection).to receive(:post).with(url, {leadId: lead_id}, body.to_json).and_return valid_response
+      response = subject.update_lead(lead_id, new_values)
+      expect(response).to eq(success_response["Status"])
+    end
+
+    it "missing lead" do
+      expect(mock_connection).to receive(:post).with(url, {leadId: lead_id}, body.to_json).and_return invalid_response
+      expect {
+        subject.update_lead(lead_id, new_values)
+      }.to raise_error(Leadsquared::InvalidRequestError)
+    end
+  end
+
   describe "#create_lead" do
     let(:url) { "#{service}Lead.Create" }
     let(:email) { "test@example.com" }
