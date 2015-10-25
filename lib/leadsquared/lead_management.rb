@@ -18,7 +18,12 @@ module Leadsquared
       parsed_response.first
     end
 
-    def get_lead_by_email
+    def get_lead_by_email(email)
+      url = url_with_service("Leads.GetByEmailaddress")
+      response = connection.get(url, {emailaddress: email})
+      parsed_response = handle_response response
+      parsed_response.first
+
     end
 
     def quick_search

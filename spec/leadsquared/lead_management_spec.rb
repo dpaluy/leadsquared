@@ -22,6 +22,7 @@ describe Leadsquared::LeadManagement do
     let(:url) { "#{service}Leads.GetById" }
     let(:lead_id) { "3131ea6a-bb20-4457-b183-ddf6d8716dfe" }
     let(:valid_response) { double("response", status: 200, body: success_response.to_json) }
+    let(:empty_response) { double("response", status: 200, body: [].to_json) }
     let(:success_response) do
       [
         {
@@ -38,6 +39,41 @@ describe Leadsquared::LeadManagement do
     it "valid request with existing id" do
       expect(mock_connection).to receive(:get).with(url, {id: lead_id}).and_return valid_response
       response = subject.get_lead_by_id(lead_id)
+    end
+
+    it "with missing id" do
+      missing_id = "12345"
+      expect(mock_connection).to receive(:get).with(url, {id: missing_id}).and_return empty_response
+      response = subject.get_lead_by_id(missing_id)
+    end
+  end
+
+  describe "#get_lead_by_email" do
+    let(:url) { "#{service}Leads.GetByEmailaddress" }
+    let(:email) { "test@example.com" }
+    let(:valid_response) { double("response", status: 200, body: success_response.to_json) }
+    let(:empty_response) { double("response", status: 200, body: [].to_json) }
+    let(:success_response) do
+      [
+        {
+          "ProspectID" => " Lead Email ",
+          "FirstName" => "Syed",
+          "LastName" => "Rizwan Ali",
+          "EmailAddress" => "rizwan@yopmail.com",
+          "Company" => "Roga",
+          "SourceReferrer" => ""
+        }
+      ]
+    end
+
+    it "valid request with existing id" do
+      expect(mock_connection).to receive(:get).with(url, {emailaddress: email}).and_return valid_response
+      response = subject.get_lead_by_email(email)
+    end
+
+    it "with missing id" do
+      expect(mock_connection).to receive(:get).with(url, {emailaddress: email}).and_return empty_response
+      response = subject.get_lead_by_email(email)
     end
   end
 
