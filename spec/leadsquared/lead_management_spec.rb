@@ -77,6 +77,44 @@ describe Leadsquared::LeadManagement do
     end
   end
 
+  describe "#quick_search" do
+    let(:url) { "#{service}Leads.GetByQuickSearch" }
+    let(:key) { "Jhon" }
+    let(:valid_response) { double("response", status: 200, body: success_response.to_json) }
+    let(:empty_response) { double("response", status: 200, body: [].to_json) }
+    let(:success_response) do
+      [
+        {
+          "ProspectID": "16837df6-ec85werwer9b1f3a902",
+          "FirstName" => "Syed",
+          "LastName" => "Rizwan Ali",
+          "EmailAddress" => "rizwan@yopmail.com",
+          "Company" => "Roga",
+          "SourceReferrer" => ""
+        },
+        {
+          "ProspectID": "16837df6-ec85werwer9b1f3a903",
+          "FirstName" => "Syed2",
+          "LastName" => "Rizwan Ali",
+          "EmailAddress" => "rizwan2@yopmail.com",
+          "Company" => "Roga",
+          "SourceReferrer" => ""
+        }
+      ]
+    end
+
+    it "valid request with existing id" do
+      expect(mock_connection).to receive(:get).with(url, {key: key}).and_return valid_response
+      response = subject.quick_search(key)
+    end
+
+    it "with missing id" do
+      expect(mock_connection).to receive(:get).with(url, {key: key}).and_return empty_response
+      response = subject.quick_search(key)
+    end
+
+  end
+
   describe "#create_lead" do
     let(:url) { "#{service}Lead.Create" }
     let(:email) { "test@example.com" }

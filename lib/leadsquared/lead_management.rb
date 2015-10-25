@@ -23,10 +23,12 @@ module Leadsquared
       response = connection.get(url, {emailaddress: email})
       parsed_response = handle_response response
       parsed_response.first
-
     end
 
-    def quick_search
+    def quick_search(key)
+      url = url_with_service("Leads.GetByQuickSearch")
+      response = connection.get(url, {key: key})
+      handle_response response
     end
 
     def create_lead(email = nil, first_name = nil, last_name = nil)
