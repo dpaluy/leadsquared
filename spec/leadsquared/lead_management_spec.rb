@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Leadsquared::LeadManagement do
   let(:mock_connection)   { double("connection") }
+  let(:lead_id) { "3131ea6a-bb20-4457-b183-ddf6d8716dfe" }
   let(:email) { "test@example.com" }
   let(:first_name) { "Bob" }
   let(:last_name) { "Zeiger" }
@@ -24,7 +25,6 @@ describe Leadsquared::LeadManagement do
 
   describe "#get_lead_by_id" do
     let(:url) { "#{service}Leads.GetById" }
-    let(:lead_id) { "3131ea6a-bb20-4457-b183-ddf6d8716dfe" }
     let(:valid_response) { double("response", status: 200, body: success_response.to_json) }
     let(:empty_response) { double("response", status: 200, body: [].to_json) }
     let(:success_response) do
@@ -119,12 +119,41 @@ describe Leadsquared::LeadManagement do
 
   end
 
+  describe "#visitor_to_lead" do
+    let(:url) { "#{service}Lead.Convert" }
+    let(:values_hash) do
+      {"OwnerId" => "1234567"}
+    end
+    let(:success_response) do
+      {
+        "Status" => "Success",
+        "Message" => {
+          "AffectedRows" => 1
+        }
+      }
+    end
+    let(:body) do
+      [
+        {
+          "Attribute": "OwnerId",
+          "Value": "1234567"
+        }
+      ]
+    end
+    let(:valid_response) { double("response", status: 200, body: success_response.to_json) }
+
+    it "converts valid user" do
+      expect(mock_connection).to receive(:post).with(url, {leadId: lead_id}, body.to_json).and_return valid_response
+      response = subject.visitor_to_lead(lead_id, values_hash)
+      expect(response).to eq(success_response["Status"])
+    end
+  end
+
   describe "#update" do
     let(:url) { "#{service}Lead.Update" }
     let(:new_values) do
       {phone: "1234567", city: "NY"}
     end
-    let(:lead_id) { "3131ea6a-bb20-4457-b183-ddf6d8716dfe" }
     let(:success_response) do
       {
         "Status" => "Success",

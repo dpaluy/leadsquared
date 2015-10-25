@@ -89,7 +89,12 @@ module Leadsquared
       parsed_response["Message"]["Id"]
     end
 
-    def visitor_to_lead
+    def visitor_to_lead(prospect_id, values_hash = {})
+      url = url_with_service("Lead.Convert")
+      body = values_hash.map {|key, val| {"Attribute" => key, "Value" => val} }
+      response = connection.post(url, {leadId: prospect_id}, body.to_json)
+      parsed_response = handle_response response
+      parsed_response["Status"]
     end
 
     private
