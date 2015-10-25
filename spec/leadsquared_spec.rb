@@ -1,7 +1,7 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 
-describe "Leadsquared" do
-  it "fails" do
-    fail "hey buddy, you should probably rename this file and start specing for real"
+describe Leadsquared do
+  it "has a version" do
+    expect(Leadsquared::VERSION).not_to be_nil
   end
 end
