@@ -60,16 +60,36 @@ module Leadsquared
       parsed_response["Status"]
     end
 
-    def create_or_update
+    def create_or_update(email = nil, first_name = nil, last_name = nil, phone = nil, search_by = "EmailAddress")
+      url = url_with_service("Lead.CreateOrUpdate")
+      body = [
+        {
+          "Attribute": "EmailAddress",
+          "Value": email
+        },
+        {
+          "Attribute": "FirstName",
+          "Value": first_name
+        },
+        {
+          "Attribute": "LastName",
+          "Value": last_name
+        },
+        {
+          "Attribute": "Phone",
+          "Value": phone
+        },
+        {
+          "Attribute": "SearchBy",
+          "Value": search_by
+        }
+      ]
+      response = connection.post(url, {}, body.to_json)
+      parsed_response = handle_response response
+      parsed_response["Message"]["Id"]
     end
 
     def visitor_to_lead
-    end
-
-    def search_lead_by_criteria
-    end
-
-    def send_email_to_lead
     end
 
     private

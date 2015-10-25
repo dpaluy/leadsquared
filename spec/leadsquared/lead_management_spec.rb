@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe Leadsquared::LeadManagement do
   let(:mock_connection)   { double("connection") }
+  let(:email) { "test@example.com" }
+  let(:first_name) { "Bob" }
+  let(:last_name) { "Zeiger" }
+
   let(:invalid_response_body) do
     {
       "Status" => "Error",
@@ -137,7 +141,7 @@ describe Leadsquared::LeadManagement do
       }
     end
     let(:body) do
-       [
+      [
         {
           "Attribute": "phone",
           "Value": "1234567"
@@ -165,11 +169,58 @@ describe Leadsquared::LeadManagement do
     end
   end
 
+  describe "#create_or_update" do
+    let(:success_response) do
+      {
+        "Status" => "Success",
+        "Message" => {
+          "Id" => "xxxxxxxx-Lead-Idxx-xxxx-xxxxxxxxxxx",
+          "AffectedRows" => 1
+        }
+      }
+    end
+
+    describe "search by email" do
+      let(:url) { "#{service}Lead.CreateOrUpdate" }
+      let(:valid_response) { double("response", status: 200, body: success_response.to_json) }
+      let(:body) do
+        [
+        {
+          "Attribute": "EmailAddress",
+          "Value": email
+        },
+        {
+          "Attribute": "FirstName",
+          "Value": first_name
+        },
+        {
+          "Attribute": "LastName",
+          "Value": last_name
+        },
+        {
+          "Attribute": "Phone",
+          "Value": nil
+        },
+        {
+          "Attribute": "SearchBy",
+          "Value": "EmailAddress"
+        }
+      ]
+      end
+      it "valid request" do
+        expect(mock_connection).to receive(:post).with(url, {}, body.to_json).and_return valid_response
+        response = subject.create_or_update(email, first_name, last_name)
+        expect(response).to eq(success_response["Message"]["Id"])
+      end
+    end
+
+    describe "search by phone" do
+      pending "TODO"
+    end
+  end
+
   describe "#create_lead" do
     let(:url) { "#{service}Lead.Create" }
-    let(:email) { "test@example.com" }
-    let(:first_name) { "Bob" }
-    let(:last_name) { "Zeiger" }
     let(:body) do
       [
         {
