@@ -1,10 +1,14 @@
 require 'json'
+require 'active_support/core_ext/object/try'
 
 module Leadsquared
   class LeadManagement
     SERVICE = '/v2/LeadManagement.svc/'.freeze
 
     def get_meta_data
+      url = url_with_service("LeadsMetaData.Get")
+      response = connection.get(url, {})
+      handle_response response
     end
 
     def get_lead_by_id
@@ -33,7 +37,8 @@ module Leadsquared
         }
       ]
       response = connection.post(url, {}, body.to_json)
-      handle_response response
+      parsed_response = handle_response response
+      parsed_response["Message"]["Id"]
     end
 
     def update_lead
@@ -72,9 +77,10 @@ module Leadsquared
       when 404
         raise InvalidRequestError.new("API Not Found")
       when 500
-        raise InvalidRequestError.new("Internal Error")
+        message = response.body.try(:[],  "ExceptionMessage")
+        raise InvalidRequestError.new("Internal Error: #{message}")
       else
-        raise InvalidRequestError.new("Unknown Error")
+        raise InvalidRequestError.new("Unknown Error#{response.body}")
       end
     end
   end
