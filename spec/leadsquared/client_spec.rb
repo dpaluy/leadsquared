@@ -30,6 +30,10 @@ describe Leadsquared do
     end
   end
 
+  describe "Invalid Request" do
+    pending "TODO"
+  end
+
   describe "Configuration" do
     it "requires token and secret" do
       expect { Leadsquared::Client.new }.to raise_error(ArgumentError)

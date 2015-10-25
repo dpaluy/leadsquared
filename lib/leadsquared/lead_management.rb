@@ -1,4 +1,5 @@
 require 'client'
+require 'json'
 
 module Leadsquared
   class LeadManagement
@@ -19,7 +20,7 @@ module Leadsquared
 
   def create_lead(email = nil, first_name = nil, last_name = nil)
     url = url_with_service("Lead.Create")
-    body = {
+    body = [
       {
         "Attribute": "EmailAddress",
         "Value": email
@@ -32,7 +33,7 @@ module Leadsquared
         "Attribute": "LastName",
         "Value": last_name
       }
-    }
+    ]
     connection.post(url, {}, body)
   end
 

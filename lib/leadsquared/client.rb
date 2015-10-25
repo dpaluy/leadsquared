@@ -1,5 +1,4 @@
 require 'faraday'
-require 'json'
 
 module Leadsquared
   class Client
