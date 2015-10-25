@@ -20,13 +20,11 @@ require 'leadsquared'
 require 'byebug'
 require 'webmock/rspec'
 
-if ENV["COVERAGE"]
-  SimpleCov.start do
-    add_filter "/.rvm/"
-  end
-  CodeClimate::TestReporter.start
-  WebMock.disable_net_connect!(:allow => "codeclimate.com")
+SimpleCov.start do
+  add_filter "/.rvm/"
 end
+CodeClimate::TestReporter.start
+WebMock.disable_net_connect!(:allow => "codeclimate.com")
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
