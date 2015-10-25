@@ -5,7 +5,7 @@ gem 'faraday'
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
-group :development do
+group :development, :test do
   gem "rspec"
   gem "rdoc"
   gem "bundler"
@@ -13,4 +13,5 @@ group :development do
   gem "simplecov"
   gem "pry-byebug"
   gem "webmock"
+  gem "codeclimate-test-reporter", require: nil
 end

@@ -1,4 +1,5 @@
 require 'simplecov'
+require "codeclimate-test-reporter"
 
 module SimpleCov::Configuration
   def clean_filters
@@ -11,9 +12,13 @@ SimpleCov.configure do
   load_adapter 'test_frameworks'
 end
 
-ENV["COVERAGE"] && SimpleCov.start do
-  add_filter "/.rvm/"
+if ENV["COVERAGE"]
+  SimpleCov.start do
+    add_filter "/.rvm/"
+  end
+  CodeClimate::TestReporter.start
 end
+
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
