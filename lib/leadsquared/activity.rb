@@ -33,8 +33,17 @@ module Leadsquared
       parsed_response["Message"]["Id"]
     end
 
-    def post_activity
-
+    def create_lead_activity(lead_id, event_id, notes = nil)
+      url = url_with_service("Create")
+      body = {
+        "RelatedProspectId" => lead_id,
+        "ActivityEvent"     => event_id,
+        "ActivityNote"      => notes,
+        "ActivityDateTime"  => current_utc_time
+      }
+      response = connection.post(url, {leadId: lead_id}, body.to_json)
+      parsed_response = handle_response response
+      parsed_response["Message"]["Id"]
     end
 
     def create(email, event_id, notes = nil, first_name = nil, last_name = nil)
