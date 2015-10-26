@@ -1,6 +1,7 @@
 require 'leadsquared/config'
 require 'leadsquared/client'
-require 'leadsquared/lead_management'
+require 'leadsquared/lead'
+require 'leadsquared/activity'
 require 'leadsquared/invalid_request_error'
 require 'leadsquared/engine' if defined?(Rails)
 

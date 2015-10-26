@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Leadsquared::LeadManagement do
+describe Leadsquared::Lead do
   let(:mock_connection)   { double("connection") }
   let(:lead_id) { "3131ea6a-bb20-4457-b183-ddf6d8716dfe" }
   let(:email) { "test@example.com" }
@@ -17,7 +17,7 @@ describe Leadsquared::LeadManagement do
   let(:invalid_response)  { double("response", status: 500, body: invalid_response_body) }
   let(:service) { '/v2/LeadManagement.svc/' }
 
-  subject { Leadsquared::LeadManagement.new }
+  subject { Leadsquared::Lead.new }
 
   before do
     expect( Leadsquared::Client).to receive(:new).and_return mock_connection

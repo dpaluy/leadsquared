@@ -2,7 +2,7 @@ require 'json'
 require 'active_support/core_ext/object/try'
 
 module Leadsquared
-  class LeadManagement
+  class Lead
     SERVICE = '/v2/LeadManagement.svc/'.freeze
 
     def get_meta_data
