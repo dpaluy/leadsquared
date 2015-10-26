@@ -5,7 +5,6 @@ This is a simple Ruby wrapper to [Leadsquared](http://apidocs.leadsquared.com/) 
 [![Gem Version](https://badge.fury.io/rb/leadsquared.png)](http://badge.fury.io/rb/leadsquared)
 [![Build Status](https://secure.travis-ci.org/dpaluy/leadsquared.png)](http://travis-ci.org/dpaluy/leadsquared)
 [![Code Climate](https://codeclimate.com/github/dpaluy/leadsquared/badges/gpa.svg)](https://codeclimate.com/github/dpaluy/leadsquared)
-[![Test Coverage](https://codeclimate.com/github/dpaluy/leadsquared/badges/coverage.svg)](https://codeclimate.com/github/dpaluy/leadsquared/coverage)
 [![Dependency Status](https://gemnasium.com/dpaluy/leadsquared.svg)](https://gemnasium.com/dpaluy/leadsquared)
 
 ## Usage
@@ -24,7 +23,7 @@ end
 
 ### NOTE
 
-This version implements only LeadManagement as described [here](http://apidocs.leadsquared.com/meta-data/)
+This version implements only [LeadManagement](http://apidocs.leadsquared.com/meta-data/) and [ActivityManagement](http://apidocs.leadsquared.com/get-activities-of-a-lead/)
 
 ## Contributing to leadsquared
 
