@@ -3,7 +3,7 @@ require 'logger'
 module Leadsquared
 
   class Config
-    attr_accessor :key, :secret, :endpoint
+    attr_accessor :key, :secret, :endpoint, :logger
 
     def logger
       @logger ||= Logger.new(STDERR)
