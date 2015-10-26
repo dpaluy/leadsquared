@@ -35,7 +35,7 @@ module Leadsquared
       handle_response response
     end
 
-    def create_lead(email = nil, first_name = nil, last_name = nil)
+    def create_lead(email, first_name = nil, last_name = nil)
       url = url_with_service("Lead.Create")
       body = [
         {
