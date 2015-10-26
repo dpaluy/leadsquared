@@ -2,7 +2,7 @@ require 'json'
 require 'active_support/core_ext/object/try'
 
 module Leadsquared
-  class Activity
+  class Activity < ApiConnection
     SERVICE = '/v2/ProspectActivity.svc/'.freeze
 
     def initialize
