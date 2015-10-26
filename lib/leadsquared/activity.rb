@@ -19,8 +19,18 @@ module Leadsquared
       handle_response response
     end
 
-    def create(activity)
-
+    # direction - Use ‘1’ as direction for Outbound Activity and ‘0’ for Inbound Activity
+    def create(name, score, description, direction = 0)
+      url = url_with_service("CreateType")
+      body = {
+        "ActivityEventName" => name,
+        "Score" => score,
+        "Description" => description,
+        "Direction" => direction
+      }
+      response = connection.post(url, {}, body.to_json)
+      parsed_response = handle_response response
+      parsed_response["Message"]["Id"]
     end
 
     def post_activity

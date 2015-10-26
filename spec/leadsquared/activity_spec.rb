@@ -32,6 +32,39 @@ describe Leadsquared::Lead do
       expect(mock_connection).to receive(:post).with(url, {leadId: lead_id}, body.to_json).and_return valid_response
       subject.get_activities(lead_id, activity_event_id)
     end
+  end
+
+  describe "#create" do
+    let(:url) { "#{service}CreateType" }
+    let(:score) { 10 }
+    let(:activity_name) { "New Activity" }
+    let(:description) { "Some Description" }
+    let(:body) do
+      {
+        "ActivityEventName" => activity_name,
+        "Score" => score,
+        "Description" => description,
+        "Direction" => 0
+      }
+    end
+    let(:success_response) do
+      {
+        "Status": "Success",
+        "Message": {
+          "Id": "206"
+        }
+      }
+    end
+    let(:valid_response) { double("response", status: 200, body: success_response.to_json) }
+
+    it "activity event" do
+      expect(mock_connection).to receive(:post).with(url, {}, body.to_json).and_return valid_response
+      response = subject.create(activity_name, score, description)
+      expect(response).to eq("206")
+    end
+  end
+
+  describe "#post_activity" do
 
   end
 end
