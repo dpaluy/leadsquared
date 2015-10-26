@@ -8,6 +8,7 @@ require 'rspec'
 require 'leadsquared'
 require 'byebug'
 require 'webmock/rspec'
+require 'timecop'
 
 if ENV["COVERAGE"]
   SimpleCov.start do

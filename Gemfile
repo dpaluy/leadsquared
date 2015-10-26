@@ -13,5 +13,6 @@ group :development, :test do
   gem "simplecov"
   gem "pry-byebug"
   gem "webmock"
+  gem "timecop"
   gem "codeclimate-test-reporter", require: nil
 end

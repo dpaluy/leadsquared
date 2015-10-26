@@ -20,7 +20,7 @@ module Leadsquared
     end
 
     # direction - Use ‘1’ as direction for Outbound Activity and ‘0’ for Inbound Activity
-    def create(name, score, description, direction = 0)
+    def create_activity_type(name, score, description, direction = 0)
       url = url_with_service("CreateType")
       body = {
         "ActivityEventName" => name,
@@ -37,10 +37,26 @@ module Leadsquared
 
     end
 
-    def post_activity_with_email
-
+    def create(email, event_id, notes = nil, first_name = nil, last_name = nil)
+      url = url_with_service("Create")
+      body = {
+        "EmailAddress"      => email,
+        "ActivityEvent"     => event_id,
+        "ActivityNote"      => notes,
+        "ActivityDateTime"  => current_utc_time,
+        "FirstName"         => first_name,
+        "LastName"          => last_name
+      }
+      response = connection.post(url, {}, body.to_json)
+      parsed_response = handle_response response
+      parsed_response["Message"]["Id"]
     end
 
+    private
+
+    def current_utc_time
+      Time.now.utc.to_s.gsub(/ UTC$/, "")
+    end
   end
 end
 

@@ -34,7 +34,7 @@ describe Leadsquared::Lead do
     end
   end
 
-  describe "#create" do
+  describe "#create_activity_type" do
     let(:url) { "#{service}CreateType" }
     let(:score) { 10 }
     let(:activity_name) { "New Activity" }
@@ -59,12 +59,49 @@ describe Leadsquared::Lead do
 
     it "activity event" do
       expect(mock_connection).to receive(:post).with(url, {}, body.to_json).and_return valid_response
-      response = subject.create(activity_name, score, description)
+      response = subject.create_activity_type(activity_name, score, description)
       expect(response).to eq("206")
     end
   end
 
-  describe "#post_activity" do
+  describe "#create" do
+    let(:url) { "#{service}Create" }
+    let(:id) { "d91bd87a-7bca-11e5-a199-22000aa4133b" }
+    let(:event_id) { "201" }
+    let(:current_utc_time) { Time.now.utc.to_s.gsub(/ UTC$/, "") }
+    let(:body) do
+      {
+        "EmailAddress"      => email,
+        "ActivityEvent"     => event_id,
+        "ActivityNote"      => nil,
+        "ActivityDateTime"  => current_utc_time,
+        "FirstName"         => nil,
+        "LastName"          => nil
+      }
+    end
 
+    let(:success_response) do
+      {
+        "Status": "Success",
+        "Message": {
+          "Id": id
+        }
+      }
+    end
+    let(:valid_response) { double("response", status: 200, body: success_response.to_json) }
+
+    before do
+      Timecop.freeze(Time.local(2015))
+    end
+
+    after do
+      Timecop.return
+    end
+
+    it "valid activity" do
+      expect(mock_connection).to receive(:post).with(url, {}, body.to_json).and_return valid_response
+      response = subject.create(email, event_id)
+      expect(response).to eq(id)
+    end
   end
 end
