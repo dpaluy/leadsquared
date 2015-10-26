@@ -2,8 +2,12 @@ require 'json'
 require 'active_support/core_ext/object/try'
 
 module Leadsquared
-  class Lead
+  class Lead < ApiConnection
     SERVICE = '/v2/LeadManagement.svc/'.freeze
+
+    def initialize
+      super(SERVICE)
+    end
 
     def get_meta_data
       url = url_with_service("LeadsMetaData.Get")
@@ -97,33 +101,6 @@ module Leadsquared
       parsed_response["Status"]
     end
 
-    private
-
-    def url_with_service(action)
-      SERVICE + action
-    end
-
-    def connection
-      @connection ||= Leadsquared::Client.new
-    end
-
-    def handle_response(response)
-      case response.status
-      when 200
-        return JSON.parse response.body
-      when 400
-        raise InvalidRequestError.new("Bad Request")
-      when 401
-        raise InvalidRequestError.new("Unauthorized Request")
-      when 404
-        raise InvalidRequestError.new("API Not Found")
-      when 500
-        message = response.body.try(:[],  "ExceptionMessage")
-        raise InvalidRequestError.new("Internal Error: #{message}")
-      else
-        raise InvalidRequestError.new("Unknown Error#{response.body}")
-      end
-    end
   end
 
 end

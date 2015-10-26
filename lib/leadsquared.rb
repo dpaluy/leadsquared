@@ -1,5 +1,6 @@
 require 'leadsquared/config'
 require 'leadsquared/client'
+require 'leadsquared/api_connection'
 require 'leadsquared/lead'
 require 'leadsquared/activity'
 require 'leadsquared/invalid_request_error'
