@@ -24,7 +24,7 @@ module Leadsquared
       when 404
         raise InvalidRequestError.new("API Not Found")
       when 500
-        message = response.body.try(:[],  "ExceptionMessage")
+        message = response.body #.try(:[],  "ExceptionMessage")
         raise InvalidRequestError.new("Internal Error: #{message}")
       else
         raise InvalidRequestError.new("Unknown Error#{response.body}")
