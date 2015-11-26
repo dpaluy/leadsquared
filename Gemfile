@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 
-gem 'activesupport'
-gem 'faraday'
+gem 'activesupport', '~> 4.0'
+gem 'faraday', '~> 0.9.2'
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
