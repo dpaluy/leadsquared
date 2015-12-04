@@ -6,6 +6,9 @@ describe Leadsquared::Lead do
   let(:email) { "test@example.com" }
   let(:first_name) { "Bob" }
   let(:last_name) { "Zeiger" }
+  let(:attributes) do
+    {"FirstName" => first_name, "LastName" => last_name}
+  end
 
   let(:invalid_response_body) do
     {
@@ -219,32 +222,25 @@ describe Leadsquared::Lead do
           "Value": email
         },
         {
+          "Attribute": "SearchBy",
+          "Value": "EmailAddress"
+        },
+        {
           "Attribute": "FirstName",
           "Value": first_name
         },
         {
           "Attribute": "LastName",
           "Value": last_name
-        },
-        {
-          "Attribute": "Phone",
-          "Value": nil
-        },
-        {
-          "Attribute": "SearchBy",
-          "Value": "EmailAddress"
         }
       ]
       end
+
       it "valid request" do
         expect(mock_connection).to receive(:post).with(url, {}, body.to_json).and_return valid_response
-        response = subject.create_or_update(email, first_name, last_name)
+        response = subject.create_or_update(email, attributes)
         expect(response).to eq(success_response["Message"]["Id"])
       end
-    end
-
-    describe "search by phone" do
-      pending "TODO"
     end
   end
 
@@ -278,14 +274,14 @@ describe Leadsquared::Lead do
 
     it "valid request with given params" do
       expect(mock_connection).to receive(:post).with(url, {}, body.to_json).and_return valid_response
-      response = subject.create_lead(email, first_name, last_name)
+      response = subject.create_lead(email, attributes)
       expect(response).to eq(success_response["Message"]["Id"])
     end
 
     it "invalid request" do
       expect(mock_connection).to receive(:post).with(url, {}, body.to_json).and_return invalid_response
       expect {
-        subject.create_lead(email, first_name, last_name)
+        subject.create_lead(email, attributes)
       }.to raise_error(Leadsquared::InvalidRequestError)
     end
   end

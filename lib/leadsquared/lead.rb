@@ -35,22 +35,15 @@ module Leadsquared
       handle_response response
     end
 
-    def create_lead(email, first_name = nil, last_name = nil)
+    def create_lead(email, values_hash = {})
       url = url_with_service("Lead.Create")
       body = [
         {
           "Attribute": "EmailAddress",
           "Value": email
-        },
-        {
-          "Attribute": "FirstName",
-          "Value": first_name
-        },
-        {
-          "Attribute": "LastName",
-          "Value": last_name
         }
       ]
+      body += build_attributes values_hash
       response = connection.post(url, {}, body.to_json)
       parsed_response = handle_response response
       parsed_response["Message"]["Id"]
@@ -58,13 +51,13 @@ module Leadsquared
 
     def update_lead(lead_id, values_hash = {})
       url = url_with_service("Lead.Update")
-      body = values_hash.map {|key, val| {"Attribute" => key, "Value" => val} }
+      body = build_attributes values_hash
       response = connection.post(url, {leadId: lead_id}, body.to_json)
       parsed_response = handle_response response
       parsed_response["Status"]
     end
 
-    def create_or_update(email = nil, first_name = nil, last_name = nil, phone = nil, search_by = "EmailAddress")
+    def create_or_update(email, values_hash = {})
       url = url_with_service("Lead.CreateOrUpdate")
       body = [
         {
@@ -72,22 +65,11 @@ module Leadsquared
           "Value": email
         },
         {
-          "Attribute": "FirstName",
-          "Value": first_name
-        },
-        {
-          "Attribute": "LastName",
-          "Value": last_name
-        },
-        {
-          "Attribute": "Phone",
-          "Value": phone
-        },
-        {
           "Attribute": "SearchBy",
-          "Value": search_by
+          "Value": "EmailAddress"
         }
       ]
+      body += build_attributes(values_hash)
       response = connection.post(url, {}, body.to_json)
       parsed_response = handle_response response
       parsed_response["Message"]["Id"]
@@ -95,12 +77,17 @@ module Leadsquared
 
     def visitor_to_lead(prospect_id, values_hash = {})
       url = url_with_service("Lead.Convert")
-      body = values_hash.map {|key, val| {"Attribute" => key, "Value" => val} }
+      body = build_attributes(values_hash)
       response = connection.post(url, {leadId: prospect_id}, body.to_json)
       parsed_response = handle_response response
       parsed_response["Status"]
     end
 
+    private
+
+    def build_attributes(values_hash)
+      values_hash.map {|key, val| {"Attribute" => key, "Value" => val} }
+    end
   end
 
 end
