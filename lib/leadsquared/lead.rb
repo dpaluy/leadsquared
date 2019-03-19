@@ -17,14 +17,14 @@ module Leadsquared
 
     def get_lead_by_id(lead_id)
       url = url_with_service("Leads.GetById")
-      response = connection.get(url, {id: lead_id})
+      response = connection.get(url, { id: lead_id })
       parsed_response = handle_response response
       parsed_response.first
     end
 
     def get_lead_by_email(email)
       url = url_with_service("Leads.GetByEmailaddress")
-      response = connection.get(url, {emailaddress: email})
+      response = connection.get(url, { emailaddress: email })
       parsed_response = handle_response response
       parsed_response.first
     end
@@ -69,24 +69,32 @@ module Leadsquared
           "Value": "EmailAddress"
         }
       ]
-      body += build_attributes(values_hash)
+      body += build_attributes values_hash
       response = connection.post(url, {}, body.to_json)
       parsed_response = handle_response response
       parsed_response["Message"]["Id"]
     end
 
     def visitor_to_lead(prospect_id, values_hash = {})
-      url = url_with_service("Lead.Convert")
-      body = build_attributes(values_hash)
+      url = url_with_service('Lead.Convert')
+      body = build_attributes values_hash
       response = connection.post(url, {leadId: prospect_id}, body.to_json)
       parsed_response = handle_response response
       parsed_response["Status"]
     end
 
+    def capture_lead(values_hash = {})
+      url = url_with_service('Lead.Capture')
+      body = build_attributes values_hash
+      response = connection.post(url, body.to_json)
+      parsed_response = handle_response response
+      parsed_response['Status']
+    end
+
     private
 
     def build_attributes(values_hash)
-      values_hash.map {|key, val| {"Attribute" => key, "Value" => val} }
+      values_hash.map { |key, val| { 'Attribute' => key, 'Value' => val } }
     end
   end
 
