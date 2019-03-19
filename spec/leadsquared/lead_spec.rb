@@ -152,6 +152,34 @@ describe Leadsquared::Lead do
     end
   end
 
+  describe '#capture_lead' do
+    let(:url) { "#{service}Lead.Capture" }
+    let(:values_hash) do
+      { 'OwnerId' => '1234567', 'ProspectID' => lead_id }
+    end
+    let(:success_response) do
+      { "Status" => "Success", "Message" => { "AffectedRows" => 1 } }
+    end
+    let(:body) do
+      [
+        { "Attribute": "OwnerId", "Value": "1234567"  },
+        { "Attribute": "ProspectID", "Value": lead_id }
+      ]
+    end
+    let(:valid_response) do 
+      double('response', 
+              status: 200, 
+              body: success_response.to_json)
+    end
+
+    it 'capture valid user' do
+      expect(mock_connection).to receive(:post).with(url, body.to_json).and_return valid_response
+      response = subject.capture_lead(values_hash)
+      expect(response).to eq(success_response['Status'])
+    end
+
+  end
+
   describe "#update" do
     let(:url) { "#{service}Lead.Update" }
     let(:new_values) do
