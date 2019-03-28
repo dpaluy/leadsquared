@@ -173,7 +173,7 @@ describe Leadsquared::Lead do
     end
 
     it 'capture valid user' do
-      expect(mock_connection).to receive(:post).with(url, body.to_json).and_return valid_response
+      expect(mock_connection).to receive(:post).with(url, {}, body.to_json).and_return valid_response
       response = subject.capture_lead(values_hash)
       expect(response).to eq(success_response['Status'])
     end

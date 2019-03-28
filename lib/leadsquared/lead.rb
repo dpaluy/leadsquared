@@ -86,7 +86,7 @@ module Leadsquared
     def capture_lead(values_hash = {})
       url = url_with_service('Lead.Capture')
       body = build_attributes values_hash
-      response = connection.post(url, body.to_json)
+      response = connection.post(url, {}, body.to_json)
       parsed_response = handle_response response
       parsed_response['Status']
     end
